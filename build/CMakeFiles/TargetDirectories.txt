@@ -1,0 +1,4 @@
+/root/gemini/build/CMakeFiles/rebuild_cache.dir
+/root/gemini/build/CMakeFiles/edit_cache.dir
+/root/gemini/build/CMakeFiles/gateway_app.dir
+/root/gemini/build/CMakeFiles/fenix_core.dir
