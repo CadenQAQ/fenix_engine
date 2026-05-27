@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/fenix_algo.h
-vector
--
-string
--
-unordered_map
--
-cstdint
--
-
 ../include/ring_buffer.h
 atomic
 -
@@ -23,8 +13,6 @@ vector
 -
 cstdint
 -
-fenix_algo.h
-../include/fenix_algo.h
 
 /root/workspace/fenix_engine/benchmark_ringbuffer.cpp
 iostream
@@ -41,4 +29,16 @@ chrono
 -
 ring_buffer.h
 /root/workspace/fenix_engine/ring_buffer.h
+include/fenix_algo.h
+/root/workspace/fenix_engine/include/fenix_algo.h
+
+/root/workspace/fenix_engine/include/fenix_algo.h
+vector
+-
+string
+-
+unordered_map
+-
+cstdint
+-
 

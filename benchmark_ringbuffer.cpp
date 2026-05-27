@@ -7,6 +7,7 @@
 #include <mutex>
 #include <chrono>
 #include "ring_buffer.h" // 包含你写的无锁队列和 MarketHeader
+#include "include/fenix_algo.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -47,7 +48,7 @@ void consumer_mutex() {
 // ==========================================
 // 🚀 极速组：你的 Fenix 无锁环形队列
 // ==========================================
-LockFreeRingBuffer lf_queue(1024); // 容量 1024 的环
+LockFreeRingBuffer<MarketHeader> lf_queue(1024);// 容量 1024 的环
 
 void producer_lf() {
     MarketHeader msg;

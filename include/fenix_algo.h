@@ -2,10 +2,9 @@
 #include <vector>
 #include<string>
 #include <unordered_map>
+#include <cstdint> // 引入标准定长整数类型 (uint16_t, uint32_t 等)
 
 using namespace std;
-
-#include <cstdint> // 引入标准定长整数类型 (uint16_t, uint32_t 等)
 
 // 告诉编译器：接下来的结构体，按 1 字节绝对紧凑对齐，不准加 Padding！
 #pragma pack(push, 1)
@@ -20,6 +19,12 @@ struct MarketHeader {
 
 // 恢复编译器默认的对齐方式
 #pragma pack(pop)
+
+// 2. 内部事件：专门用来在 RingBuffer 里跨线程传递 (Envelope)
+struct InternalEvent {
+    uint64_t mac_timestamp;   // 网卡自己打的物理签收时间
+    MarketHeader market_data; // 完整的交易所数据
+};
 
 // 链表节点定义 (POD 结构体)
 struct ListNode {
@@ -72,6 +77,8 @@ public:
     int get(int key);
     void put(int key, int value);
 };
+
+
 
 // 算法声明
 ListNode* reverse_list(ListNode* head);
