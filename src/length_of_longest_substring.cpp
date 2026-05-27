@@ -10,18 +10,14 @@ string s1="abcabcbb";
 string s2="bbbbb";
 string s3="pwwkew";   
 
-
-
 using namespace std;
 
 int length_of_longest_substring(const std::string& s)
 {
     int left = 0; // 修正 2：明确初始化
     int length = 0;
-    
 
     vector<int> last_appear(256, -1); 
-
 
     for(int right = 0; right < s.size(); ++right)
     {
@@ -42,13 +38,13 @@ int length_of_longest_substring(const std::string& s)
     return length;
 }
 
-int main()
-{
-    string s1 = "abcabcbb";
-    // 预期结果：3 (abc)
-    cout << length_of_longest_substring(s1) << endl;
-    return 0;
-}
+// int main()
+// {
+//     string s1 = "abcabcbb";
+//     // 预期结果：3 (abc)
+//     cout << length_of_longest_substring(s1) << endl;
+//     return 0;
+// }
 
 /*
 🚀 量化真实场景落地：高频特征工程与“订单流毒性” (Order Flow Toxicity)

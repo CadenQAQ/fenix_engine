@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/gemini/main.cpp" "CMakeFiles/gateway_app.dir/main.cpp.o" "gcc" "CMakeFiles/gateway_app.dir/main.cpp.o.d"
+  "/root/fenix_engine/main.cpp" "CMakeFiles/gateway_app.dir/main.cpp.o" "gcc" "CMakeFiles/gateway_app.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/root/gemini/build/CMakeFiles/fenix_core.dir/DependInfo.cmake"
+  "/root/fenix_engine/build/CMakeFiles/fenix_core.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

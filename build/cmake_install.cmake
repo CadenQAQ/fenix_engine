@@ -1,4 +1,4 @@
-# Install script for directory: /root/gemini
+# Install script for directory: /root/fenix_engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/root/gemini/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/root/fenix_engine/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
