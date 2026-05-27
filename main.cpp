@@ -1,111 +1,60 @@
 // main.cpp
-// main.cpp
 #include <iostream>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <x86intrin.h> 
 #include <thread>
-#include <vector>
-#include <queue>
-#include <mutex>
-#include <chrono>
-#include "ring_buffer.h" // 包含你写的无锁队列和 MarketHeader
+#include <pthread.h>   
+#include "include/ring_buffer.h" 
 
 using namespace std;
-using namespace std::chrono;
 
-const int MSG_COUNT = 5000000; // 500万次极速吞吐测试
+LockFreeRingBuffer g_ring_buffer(1024);
 
-// ==========================================
-// 🐢 传统组：带锁的 std::queue
-// ==========================================
-queue<MarketHeader> mutex_queue;
-mutex mtx;
-
-void producer_mutex() {
-    MarketHeader msg;
-    for (int i = 1; i <= MSG_COUNT; ++i) {
-        msg.seq_num = i;
-        // 必须加锁才能推进去
-        mtx.lock();
-        mutex_queue.push(msg);
-        mtx.unlock();
-    }
+void pin_thread_to_core(int core_id) {
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+    CPU_SET(core_id, &cpuset);
+    pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
 }
 
-void consumer_mutex() {
-    int received = 0;
-    MarketHeader msg;
-    while (received < MSG_COUNT) {
-        mtx.lock();
-        if (!mutex_queue.empty()) {
-            msg = mutex_queue.front();
-            mutex_queue.pop();
-            received++;
-        }
-        mtx.unlock();
-    }
-}
+void network_rx_thread() {
+    pin_thread_to_core(2);
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    struct sockaddr_in addr = {};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(8888);
+    addr.sin_addr.s_addr = INADDR_ANY;
+    bind(sock, (struct sockaddr*)&addr, sizeof(addr));
 
-// ==========================================
-// 🚀 极速组：你的 Fenix 无锁环形队列
-// ==========================================
-LockFreeRingBuffer lf_queue(1024); // 容量 1024 的环
-
-void producer_lf() {
-    MarketHeader msg;
-    for (int i = 1; i <= MSG_COUNT; ++i) {
-        msg.seq_num = i;
-        // 疯狂轮询，直到推入成功。没有任何 OS 锁！
-        while (!lf_queue.push(msg)) {
-            // 队列满了就在 CPU 上空转等待 (Spin)
+    char buffer[1024];
+    while (true) {
+        int bytes = recvfrom(sock, buffer, sizeof(buffer), 0, nullptr, nullptr);
+        if (bytes > 0) {
+            MarketHeader* tick = (MarketHeader*)buffer;
+            while (!g_ring_buffer.push(*tick)) { _mm_pause(); }
         }
     }
 }
 
-void consumer_lf() {
-    int received = 0;
-    MarketHeader msg;
-    while (received < MSG_COUNT) {
-        // 疯狂轮询，直到拉取成功。没有任何 OS 锁！
-        if (lf_queue.pop(msg)) {
-            received++;
+void engine_tx_thread() {
+    pin_thread_to_core(4);
+    MarketHeader current_tick;
+    while (true) {
+        if (g_ring_buffer.pop(current_tick)) {
+            cout << "Boom! [Engine] 成功从 RingBuffer 拿到数据！当前 CPU 周期: " << __rdtsc() << endl;
+        } else {
+            _mm_pause(); 
         }
     }
 }
 
-// ==========================================
-// ⏱️ 裁判系统
-// ==========================================
 int main() {
-    cout << "=== Fenix Multi-Thread Benchmark (5,000,000 Messages) ===" << endl;
-
-    // 1. 测试传统 Mutex
-    cout << "\n[1] Running Traditional Mutex Queue..." << flush;
-    auto start_mtx = high_resolution_clock::now();
-    
-    thread t1_mtx(producer_mutex);
-    thread t2_mtx(consumer_mutex);
-    t1_mtx.join();
-    t2_mtx.join();
-    
-    auto end_mtx = high_resolution_clock::now();
-    auto duration_mtx = duration_cast<milliseconds>(end_mtx - start_mtx).count();
-    cout << " Done! Time: " << duration_mtx << " ms" << endl;
-
-    // 2. 测试 Lock-Free Ring Buffer
-    cout << "[2] Running Lock-Free Ring Buffer..." << flush;
-    auto start_lf = high_resolution_clock::now();
-    
-    thread t1_lf(producer_lf);
-    thread t2_lf(consumer_lf);
-    t1_lf.join();
-    t2_lf.join();
-    
-    auto end_lf = high_resolution_clock::now();
-    auto duration_lf = duration_cast<milliseconds>(end_lf - start_lf).count();
-    cout << " Done! Time: " << duration_lf << " ms" << endl;
-
-    // 3. 战报总结
-    cout << "\n📊 Performance Ratio: Lock-Free is " 
-         << (double)duration_mtx / duration_lf << "x FASTER!" << endl;
-
+    cout << "=== Fenix Gateway Engine v2.0 (Dual-Thread Lock-Free) ===" << endl;
+    std::thread rx_th(network_rx_thread);
+    std::thread tx_th(engine_tx_thread);
+    rx_th.join();
+    tx_th.join();
     return 0;
 }

@@ -13,7 +13,14 @@ file(GLOB SOURCES "src/*.cpp")
 # ✅ 武器库改名为 fenix_core
 add_library(fenix_core STATIC ${SOURCES})
 
-add_executable(gateway_app main.cpp)
-
+#add_executable(gateway_app main.cpp)
 # ✅ 链接器也要找对新的名字
-target_link_libraries(gateway_app fenix_core)
+#target_link_libraries(gateway_app pthread)
+
+# 编译高频网关
+add_executable(gateway_app main.cpp)
+target_link_libraries(gateway_app pthread)
+
+# 编译性能压测工具
+add_executable(benchmark_app benchmark_ringbuffer.cpp)
+target_link_libraries(benchmark_app pthread)

@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/gateway_app.dir/main.cpp.o -o gateway_app  libfenix_core.a 
+/usr/bin/c++     CMakeFiles/gateway_app.dir/main.cpp.o  -o gateway_app -lpthread 
