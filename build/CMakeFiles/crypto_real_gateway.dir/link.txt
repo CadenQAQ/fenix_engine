@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/crypto_real_gateway.dir/crypto_real_gateway.cpp.o -o crypto_real_gateway  -lpthread /usr/lib64/libssl.so /usr/lib64/libcrypto.so /usr/lib64/libboost_system.so 

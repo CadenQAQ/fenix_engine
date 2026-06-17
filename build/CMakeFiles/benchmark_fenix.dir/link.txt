@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/benchmark_fenix.dir/benchmark_fenix.cpp.o -o benchmark_fenix  -lpthread 

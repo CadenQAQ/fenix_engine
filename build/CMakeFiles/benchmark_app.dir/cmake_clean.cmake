@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/benchmark_app.dir/benchmark_ringbuffer.cpp.o"
-  "benchmark_app.pdb"
+  "CMakeFiles/benchmark_app.dir/benchmark_ringbuffer.cpp.o.d"
   "benchmark_app"
+  "benchmark_app.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

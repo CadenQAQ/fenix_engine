@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/gateway_app.dir/main.cpp.o"
-  "gateway_app.pdb"
+  "CMakeFiles/gateway_app.dir/main.cpp.o.d"
   "gateway_app"
+  "gateway_app.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

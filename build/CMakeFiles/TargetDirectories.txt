@@ -1,5 +1,7 @@
 /root/workspace/fenix_engine/build/CMakeFiles/rebuild_cache.dir
-/root/workspace/fenix_engine/build/CMakeFiles/benchmark_app.dir
-/root/workspace/fenix_engine/build/CMakeFiles/fenix_core.dir
-/root/workspace/fenix_engine/build/CMakeFiles/edit_cache.dir
 /root/workspace/fenix_engine/build/CMakeFiles/gateway_app.dir
+/root/workspace/fenix_engine/build/CMakeFiles/crypto_real_gateway.dir
+/root/workspace/fenix_engine/build/CMakeFiles/edit_cache.dir
+/root/workspace/fenix_engine/build/CMakeFiles/fenix_core.dir
+/root/workspace/fenix_engine/build/CMakeFiles/benchmark_app.dir
+/root/workspace/fenix_engine/build/CMakeFiles/benchmark_fenix.dir
